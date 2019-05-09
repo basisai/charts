@@ -1,0 +1,18 @@
+language: bash
+
+services:
+  - docker
+
+env:
+  global:
+    - TEST_IMAGE="quay.io/helmpack/chart-testing:v2.2.0"
+
+script:
+  - tests/run.sh
+
+branches:
+  only:
+  - master
+
+notifications:
+email: false
