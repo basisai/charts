@@ -27,6 +27,7 @@ env: []
 service:
   type: ClusterIP
   ports: []
+  annotations: {}
 
 consulTemplate:
   repo: "hashicorp/consul-template"
