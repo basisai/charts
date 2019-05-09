@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repo: "telegraf"
-  tag: "1.9-alpine"
+  tag: "1.10-alpine"
   pullPolicy: IfNotPresent
 
 podAnnotations: {}
@@ -21,38 +21,99 @@ resources: {}
   #   memory: 128Mi
   #   cpu: 100m
 
+# Environment variables for Telegraf
+env: []
+
 service:
   type: ClusterIP
-## Exposed telegraf configuration
-## For full list of possible values see `/docs/all-config-values.yaml` and `/docs/all-config-values.toml`
-## ref: https://docs.influxdata.com/telegraf/v1.1/administration/configuration/
-config:
-  agent:
-    interval: "10s"
-    round_interval: true
-    metric_batch_size: 1000
-    metric_buffer_limit: 10000
-    collection_jitter: "0s"
-    flush_interval: "10s"
-    flush_jitter: "0s"
-    precision: ""
-    debug: false
-    quiet: false
-    logfile: ""
-    hostname: "$HOSTNAME"
-    omit_hostname: false
-  outputs:
-    - influxdb:
-        urls:
-          - "http://influxdb.monitoring.svc:8086"
-        database: "telegraf"
-  inputs:
-    - statsd:
-        service_address: ":8125"
-        percentiles:
-          - 50
-          - 95
-          - 99
-        metric_separator: "_"
-        allowed_pending_messages: 10000
-        percentile_limit: 1000
+  ports: []
+
+consulTemplate:
+  repo: "hashicorp/consul-template"
+  tag: "0.20.0-light"
+  pullPolicy: IfNotPresent
+  resources: {}
+  config: |
+    # Leave this in for Health Checks
+    pid_file = "/pid/consul-template"
+    log_level = "info"
+    kill_signal = "SIGTERM"
+
+    # If you are using Vault
+    # vault {
+    #   address = "https://vault.service.consul:8200"
+    #   vault_agent_token_file = "/vault/token"
+    #   ssl {
+    #     # ...
+    #   }
+    # }
+
+    template {
+      source = "/template/telegraf.conf"
+      destination = "/etc/telegraf/telegraf.conf"
+      create_dest_dirs = true
+      error_on_missing_key = true
+      command = "/bin/sh -c 'kill -1 $(cat /pid/telegraf) || echo \"not running\"'"
+    }
+  env: []
+
+# Vault Agent
+vaultAgent:
+  # If you enable this, you need to update Consul Template to use the tokens from here
+  enable: false
+  repo: "vault"
+  tag: "1.1.2"
+  pullPolicy: IfNotPresent
+  resources: {}
+  # You might need to put additional files here like Vault CA
+  files:
+    agent.hcl: |
+      # Leave this in for Health Checks
+      pid_file = "/pid/vault-agent"
+
+      vault {
+        address = "https://vault.service.consul:8200"
+        # Include other keys like CA
+      }
+
+      auto_auth {
+        method "kubernetes" {
+          mount_path = "auth/kubernetes"
+          config {
+            role = "telegraf"
+          }
+        }
+
+        sink "file" {
+          config {
+            path = "/vault/token"
+          }
+        }
+
+        # Leave this sink in for Token revocation on Pod shutdown
+        sink "file" {
+          config {
+            path = "/root/.vault-token"
+          }
+        }
+      }
+
+
+# If you add additional templates, you need to update Consul Template configuration to use the
+# new templates
+templates:
+  telegraf.conf: |
+    # [global_tags]
+      # key =  "value"
+
+    [agent]
+      interval = 30s
+      omit_hostname = true
+
+    # Get kernel statistics from /proc/stat
+    [[inputs.kernel]]
+      # no configuration
+
+    # Send metrics to nowhere at all
+    [[outputs.discard]]
+      # no configuration
