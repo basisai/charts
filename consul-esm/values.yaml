@@ -1,0 +1,68 @@
+# Default values for consul-esm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+image:
+  repository: basisai/consul-esm
+  tag: stable
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+config:
+  logLevel: "INFO"
+
+  # The service name for this agent to use when registering itself with Consul.
+  serviceName: "consul-esm"
+
+  # The service tag for this agent to use when registering itself with Consul.
+  # ESM instances that share a service name/tag combination will have the work
+  # of running health checks and pings for any external nodes in the catalog
+  # divided evenly amongst themselves.
+  serviceTag: ""
+
+  # The directory in the Consul KV store to use for storing runtime data.
+  kvPath: "consul-esm/"
+
+  # The node metadata values used for the ESM to qualify a node in the catalog
+  # as an "external node".
+  externalNodeMeta:
+    external-node: "true"
+  # The length of time to wait before reaping an external node due to failed
+  # pings.
+  nodeReconnectTimeout: "72h"
+
+  # The interval to ping and update coordinates for external nodes that have
+  # 'external-probe' set to true. By default, ESM will attempt to ping and
+  # update the coordinates for all nodes it is watching every 10 seconds.
+  nodeProbeInterval: "10s"
+
+  # The address of the local Consul agent. Can also be provided through the
+  # CONSUL_HTTP_ADDR environment variable.
+  httpAddr: "localhost:8500"
+
+  # The method to use for pinging external nodes. Defaults to "udp" but can
+  # also be set to "socket" to use ICMP (which requires root privileges).
+  pingType: "udp"
