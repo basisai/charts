@@ -24,7 +24,7 @@ data:
     # The node metadata values used for the ESM to qualify a node in the catalog
     # as an "external node".
     external_node_meta {
-      {{- range $key, $value := . }}
+      {{- range $key, $value := .Values.config.externalNodeMeta }}
         {{ $key }} = "{{ $value }}"
       {{- end }}
     }
@@ -38,9 +38,11 @@ data:
     # update the coordinates for all nodes it is watching every 10 seconds.
     node_probe_interval = "{{ .Values.config.node_probe_interval }}"
 
+    {{- if .Values.config.httpAddr }}
     # The address of the local Consul agent. Can also be provided through the
     # CONSUL_HTTP_ADDR environment variable.
     http_addr = "{{ .Values.config.httpAddr }}"
+    {{- end -}}
 
     # The ACL token to use when communicating with the local Consul agent. Can
     # also be provided through the CONSUL_HTTP_TOKEN environment variable.
@@ -72,4 +74,4 @@ data:
 
     # The method to use for pinging external nodes. Defaults to "udp" but can
     # also be set to "socket" to use ICMP (which requires root privileges).
-    ping_type = "udp"
+    ping_type = "{{ .Values.config.pingType }}"

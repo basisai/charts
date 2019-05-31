@@ -31,6 +31,23 @@ tolerations: []
 
 affinity: {}
 
+env: []
+
+# The sysctl below is needed for UDP Ping to work
+# See https://github.com/tatsushid/go-fastping/issues/25#issuecomment-236203705
+# It is not enabled by default because it is an "unsafe" sysctl
+# See https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/
+# Alternatively, set initContainerSetSysCtl to `true`
+podSecurityContext:
+  # sysctls:
+  #   - name: "net.ipv4.ping_group_range"
+  #     value: "0 65535"
+
+containerSecurityContext: {}
+
+# See above
+initContainerSetSysCtl: true
+
 config:
   logLevel: "INFO"
 
