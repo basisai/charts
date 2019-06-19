@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "telegraf.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "telegraf.name" . }}
+    helm.sh/chart: {{ include "telegraf.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "telegraf.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "telegraf.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        checksum/ct: {{ include (print $.Template.BasePath "/consul_template.yaml") . | sha256sum }}
+        checksum/tpl: {{ include (print $.Template.BasePath "/tpl.yaml") . | sha256sum }}
+        checksum/vault: {{ include (print $.Template.BasePath "/vault.yaml") . | sha256sum }}
+      {{- if .Values.podAnnotations }}
+        {{- toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      shareProcessNamespace: true
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ default "" .Values.image.pullPolicy | quote }}
+        args:
+          - telegraf
+          - "--pidfile=/pid/telegraf"
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+        {{- if .Values.env }}
+        env:
+{{ toYaml .Values.env | indent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: telegraf-config
+          mountPath: /etc/telegraf
+        - name: pid
+          mountPath: /pid
+        - name: output
+          mountPath: /output
+        {{- if .Values.probes.liveness }}
+{{ toYaml .Values.probes.liveness | indent 10 }}
+        {{- end }}
+        {{- if .Values.probes.readiness }}
+{{ toYaml .Values.probes.readiness | indent 10 }}
+        {{- end }}
+      - name: consul-template
+        image: "{{ .Values.consulTemplate.repo }}:{{ .Values.consulTemplate.tag }}"
+        imagePullPolicy: {{ .Values.consulTemplate.pullPolicy }}
+        resources:
+{{- toYaml .Values.consulTemplate.resources | nindent 10 }}
+        env:
+        - name: "HOST_IP"
+          valueFrom:
+            fieldRef:
+              fieldPath: "status.hostIP"
+        {{- if .Values.consulTemplate.env }}
+        {{- toYaml .Values.consulTemplate.env | indent 8 }}
+        {{- end }}
+        volumeMounts:
+        - name: telegraf-config
+          mountPath: /etc/telegraf
+        - name: output
+          mountPath: /output
+        - name: templates
+          mountPath: /templates
+          readOnly: true
+        - name: ct
+          mountPath: /ct
+          readOnly: true
+        - name: vault-config
+          mountPath: /vault-config
+          readOnly: true
+        - name: pid
+          mountPath: /pid
+        command:
+          - "/bin/consul-template"
+        args:
+          - "-consul-addr=$(HOST_IP):8500"
+          - "-config=/ct/config.hcl"
+          - "-log-level=debug"
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /pid/consul-template
+          initialDelaySeconds: 10
+      {{- if .Values.vaultAgent.enabled }}
+      - name: vault-agent
+        image: "{{ .Values.vaultAgent.repo }}:{{ .Values.vaultAgent.tag }}"
+        imagePullPolicy: {{ .Values.vaultAgent.pullPolicy }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - /bin/vault
+                - token
+                - revoke
+                - -self
+        resources:
+{{ toYaml .Values.vaultAgent.resources | nindent 10 }}
+        volumeMounts:
+          - name: pid
+            mountPath: /pid
+          - name: output
+            mountPath: /output
+          - name: vault-config
+            mountPath: /vault-config
+            readOnly: true
+        {{- if .Values.vaultAgent.env }}
+        env:
+{{ toYaml .Values.vaultAgent.env | nindent 10 }}
+        {{- end }}
+        command:
+          - /bin/vault
+        args:
+          - agent
+          - -config=/vault-config/agent.hcl
+          - -log-level=debug
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /pid/vault-agent
+            - /output/token
+          initialDelaySeconds: 10
+      {{- end }}
+      volumes:
+      - name: telegraf-config
+        emptyDir: {}
+      - name: output
+        emptyDir: {}
+      - name: pid
+        emptyDir: {}
+      - name: ct
+        configMap:
+          name: {{ include "telegraf.fullname" . }}-ct
+      - name: vault-config
+        configMap:
+          name: {{ include "telegraf.fullname" . }}-vault
+      - name: templates
+        configMap:
+          name: {{ include "telegraf.fullname" . }}-tpl

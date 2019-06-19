@@ -1,0 +1,127 @@
+## Default values.yaml for Telegraf
+## This is a YAML-formatted file.
+## ref: https://hub.docker.com/r/library/telegraf/tags/
+
+replicaCount: 1
+
+image:
+  repo: "telegraf"
+  tag: "1.10-alpine"
+  pullPolicy: IfNotPresent
+
+podAnnotations: {}
+
+## Configure resource requests and limits
+## ref: http://kubernetes.io/docs/user-guide/compute-resources/
+resources: {}
+  # requests:
+  #   memory: 128Mi
+  #   cpu: 100m
+  # limits:
+  #   memory: 128Mi
+  #   cpu: 100m
+
+# Environment variables for Telegraf
+env: []
+
+serviceAccountName: telegraf
+
+probes:
+  liveness: {}
+  readiness: {}
+
+service:
+  type: ClusterIP
+  ports: []
+  annotations: {}
+
+consulTemplate:
+  repo: "hashicorp/consul-template"
+  tag: "0.20.0-light"
+  pullPolicy: IfNotPresent
+  resources: {}
+  config: |
+    # Leave this in for Health Checks
+    pid_file = "/pid/consul-template"
+    log_level = "info"
+    kill_signal = "SIGTERM"
+
+    # If you are using Vault
+    # vault {
+    #   address = "https://vault.service.consul:8200"
+    #   vault_agent_token_file = "/output/token"
+    #   ssl {
+    #     # ...
+    #   }
+    # }
+
+    template {
+      source = "/templates/telegraf.conf"
+      destination = "/etc/telegraf/telegraf.conf"
+      create_dest_dirs = true
+      error_on_missing_key = true
+      command = "/bin/sh -c 'kill -1 $(cat /pid/telegraf) || echo \"not running\"'"
+    }
+  env: []
+
+# Vault Agent
+vaultAgent:
+  # If you enable this, you need to update Consul Template to use the tokens from here
+  enabled: false
+  repo: "vault"
+  tag: "1.1.3"
+  pullPolicy: IfNotPresent
+  resources: {}
+  env: []
+  # You might need to put additional files here like Vault CA
+  files:
+    agent.hcl: |
+      # Leave this in for Health Checks
+      pid_file = "/pid/vault-agent"
+
+      vault {
+        address = "https://vault.service.consul:8200"
+        # Include other keys like CA
+      }
+
+      auto_auth {
+        method "kubernetes" {
+          mount_path = "auth/kubernetes"
+          config {
+            role = "telegraf"
+          }
+        }
+
+        sink "file" {
+          config {
+            path = "/output/token"
+          }
+        }
+
+        # Leave this sink in for Token revocation on Pod shutdown
+        sink "file" {
+          config {
+            path = "/root/.vault-token"
+          }
+        }
+      }
+
+
+# If you add additional templates, you need to update Consul Template configuration to use the
+# new templates
+templates:
+  telegraf.conf: |
+    # [global_tags]
+      # key =  "value"
+
+    [agent]
+      interval = "30s"
+      omit_hostname = true
+
+    # Get kernel statistics from /proc/stat
+    [[inputs.kernel]]
+      # no configuration
+
+    # Send metrics to nowhere at all
+    [[outputs.discard]]
+      # no configuration
