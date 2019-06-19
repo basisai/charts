@@ -24,6 +24,8 @@ resources: {}
 # Environment variables for Telegraf
 env: []
 
+serviceAccountName: telegraf
+
 service:
   type: ClusterIP
   ports: []
@@ -43,14 +45,14 @@ consulTemplate:
     # If you are using Vault
     # vault {
     #   address = "https://vault.service.consul:8200"
-    #   vault_agent_token_file = "/vault/token"
+    #   vault_agent_token_file = "/output/token"
     #   ssl {
     #     # ...
     #   }
     # }
 
     template {
-      source = "/template/telegraf.conf"
+      source = "/templates/telegraf.conf"
       destination = "/etc/telegraf/telegraf.conf"
       create_dest_dirs = true
       error_on_missing_key = true
@@ -61,11 +63,12 @@ consulTemplate:
 # Vault Agent
 vaultAgent:
   # If you enable this, you need to update Consul Template to use the tokens from here
-  enable: false
+  enabled: false
   repo: "vault"
-  tag: "1.1.2"
+  tag: "1.1.3"
   pullPolicy: IfNotPresent
   resources: {}
+  env: []
   # You might need to put additional files here like Vault CA
   files:
     agent.hcl: |
@@ -87,7 +90,7 @@ vaultAgent:
 
         sink "file" {
           config {
-            path = "/vault/token"
+            path = "/output/token"
           }
         }
 
@@ -108,7 +111,7 @@ templates:
       # key =  "value"
 
     [agent]
-      interval = 30s
+      interval = "30s"
       omit_hostname = true
 
     # Get kernel statistics from /proc/stat

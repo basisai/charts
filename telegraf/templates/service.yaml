@@ -9,12 +9,12 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   {{- if .Values.service.annotations }}
   annotations:
-    {{- toYaml .Values.service.annotations | indent 4 }}
+{{ toYaml .Values.service.annotations | indent 4 }}
   {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
-    {{ toYaml .Values.service.ports | indent 4 }}
+{{ toYaml .Values.service.ports | indent 4 }}
   selector:
     app.kubernetes.io/name: {{ include "telegraf.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
