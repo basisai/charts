@@ -26,6 +26,10 @@ env: []
 
 serviceAccountName: telegraf
 
+probes:
+  liveness: {}
+  readiness: {}
+
 service:
   type: ClusterIP
   ports: []
