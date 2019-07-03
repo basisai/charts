@@ -1,0 +1,19 @@
+---
+- name: Backup GCS
+  hosts: all
+  vars:
+    # Name of gcs source bucket
+    gcs_source_bucket: ""
+    # Name of gcs backup bucket
+    gcs_backup_bucket: ""
+    # Object name prefix
+    gcs_backup_prefix: "backup/"
+    # Path to the service account JSON
+    service_account_key: ""
+  tasks:
+    - name: Configure Boto
+      template:
+        dest: "{{ lookup('env','HOME') }}/.boto"
+        src: "{{ playbook_dir }}/boto.ini"
+    - name: Copy to gcs
+      shell: "gsutil -m cp -r -p gs://{{ gcs_source_bucket }}/* gs://{{ gcs_backup_bucket }}/{{ gcs_backup_prefix }}{{ ansible_date_time.iso8601 }}/"
