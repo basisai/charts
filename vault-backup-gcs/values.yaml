@@ -9,7 +9,7 @@ failedJobsHistoryLimit: "10"
 ttlSecondsAfterFinished: 86400
 
 image:
-  repository: basisai/vault-backup-gcs
+  repository: basisai/ansible-backup-gcs
   tag: latest
   pullPolicy: IfNotPresent
 
