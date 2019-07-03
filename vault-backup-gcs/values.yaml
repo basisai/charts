@@ -1,0 +1,74 @@
+# See https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/#schedule
+schedule: "0 4 * * *"
+# See https://kubernetes.io/docs/tasks/job/automated-tasks-with-cron-jobs/#concurrency-policy
+concurrencyPolicy: "Allow"
+
+successfulJobsHistoryLimit: "10"
+failedJobsHistoryLimit: "10"
+
+ttlSecondsAfterFinished: 86400
+
+image:
+  repository: basisai/vault-backup-gcs
+  tag: latest
+  pullPolicy: IfNotPresent
+
+env: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: "vault-backup-gcs"
+
+vault:
+  image: vault
+  tag: 1.0.3
+  pullPolicy: IfNotPresent
+  address: https://vault.service.consul:8200
+  # PEM encoded CA used to issue Vault's Certificate
+  ca: ""
+  auth:
+    path: "kubernetes"
+    role: ""
+  gcp:
+    path: ""
+  env: []
+
+consulTemplate:
+  image: hashicorp/consul-template
+  tag: 0.20.0-light
+  pullPolicy: IfNotPresent
+  env: []
+
+resources:
+  consulTemplate: {}
+  vaultAgent: {}
+  backup:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+labels:
+  serviceAccount: {}
+  cronJob: {}
+  pods: {}
+  configMap: {}
+
+annotations:
+  serviceAccount: {}
+  cronJob: {}
+  pods: {}
+  configMap: {}
+
+gcs:
+  bucket: ""
+  prefix: "backup/vault/"
