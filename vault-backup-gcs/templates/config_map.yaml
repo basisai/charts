@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "vault-backup-gcs.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "vault-backup-gcs.name" . }}
+    helm.sh/chart: {{ include "vault-backup-gcs.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- with .Values.labels.configMap }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if .Values.annotations.configMap }}
+  annotations:
+    {{- with .Values.annotations.configMap }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+data:
+  ansible: |
+    gcs_source_bucket: {{ required "GCS vault bucket is required" .Values.gcs.vault_bucket }}
+    gcs_backup_bucket: {{ required "GCS backup bucket is required" .Values.gcs.backup_bucket }}
+    gcs_backup_prefix: {{ .Values.gcs.backup_prefix }}
+    service_account_key: /gcp/service_account.json
+  consulTemplate: |
+    pid_file = "/pid"
+    kill_signal = "SIGTERM"
+
+    vault {
+      vault_agent_token_file = "/vault/token"
+
+      ssl {
+        enabled = true
+      }
+    }
+
+    template {
+      left_delimiter = "||"
+      right_delimiter = "||"
+
+      contents = <<-EOF
+      ||- with secret "{{ required "GCP secrets backend path is needed" .Values.vault.gcp.path }}" -||
+      ||- .Data.private_key_data | base64Decode -||
+      ||- end -||
+      EOF
+
+      destination = "/gcp/service_account.json"
+      create_dest_dirs = true
+      error_on_missing_key = true
+    }
+  vaultCA: {{ required "Vault CA is required" .Values.vault.ca | quote }}
+  vaultAgent: |
+    pid_file = "/pid"
+    exit_after_auth = true
+
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/{{ required "Auth mount path is needed" .Values.vault.auth.path }}"
+
+        config {
+          role = "{{ required "Vault Auth Role is needed" .Values.vault.auth.role }}"
+          token_path = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        }
+      }
+
+      sink "file" {
+        config {
+          path = "/vault/token"
+        }
+      }
+    }

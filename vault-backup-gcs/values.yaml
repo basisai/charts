@@ -70,5 +70,6 @@ annotations:
   configMap: {}
 
 gcs:
-  bucket: ""
-  prefix: "backup/vault/"
+  vault_bucket: ""
+  backup_bucket: ""
+  backup_prefix: "backup/vault/"
