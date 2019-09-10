@@ -21,8 +21,8 @@ spec:
         checksum/ct: {{ include (print $.Template.BasePath "/consul_template.yaml") . | sha256sum }}
         checksum/tpl: {{ include (print $.Template.BasePath "/tpl.yaml") . | sha256sum }}
         checksum/vault: {{ include (print $.Template.BasePath "/vault.yaml") . | sha256sum }}
-      {{- if .Values.podAnnotations }}
-        {{- toYaml .Values.podAnnotations | indent 8 }}
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
       serviceAccountName: {{ .Values.serviceAccountName }}
