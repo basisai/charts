@@ -54,7 +54,7 @@ spec:
             - name: CI_VERSION
               value: "k8s/1.0.0"
           resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
             - name: config-volume
               mountPath: /config-volume
