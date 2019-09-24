@@ -5,6 +5,7 @@
 nameOverride: ""
 fullnameOverride: ""
 
+priorityClassName: "system-node-critical"
 serviceAccountName: fluentd
 
 awsRegion: ""
@@ -13,10 +14,10 @@ clusterName: ""
 resources:
   limits:
     cpu: 200m
-    memory: 200Mi
+    memory: 500Mi
   requests:
     cpu: 50m
-    memory: 200Mi
+    memory: 500Mi
 
 nodeSelector: {}
 
