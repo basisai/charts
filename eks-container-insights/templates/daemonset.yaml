@@ -7,6 +7,9 @@ metadata:
   labels:
     k8s-app: {{ include "eks-container-insights.name" . }}
 spec:
+  selector:
+    matchLabels:
+      k8s-app: {{ include "eks-container-insights.name" . }}
   template:
     metadata:
       labels:

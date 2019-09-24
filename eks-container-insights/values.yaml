@@ -12,9 +12,10 @@ clusterName: ""
 
 resources:
   limits:
+    cpu: 200m
     memory: 200Mi
   requests:
-    cpu: 100m
+    cpu: 50m
     memory: 200Mi
 
 nodeSelector: {}
