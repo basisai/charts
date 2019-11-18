@@ -36,6 +36,7 @@ service:
   annotations: {}
 
 consulTemplate:
+  enabled: true
   repo: "hashicorp/consul-template"
   tag: "0.20.0-light"
   pullPolicy: IfNotPresent

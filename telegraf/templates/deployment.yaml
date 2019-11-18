@@ -53,6 +53,7 @@ spec:
         {{- if .Values.probes.readiness }}
 {{ toYaml .Values.probes.readiness | indent 10 }}
         {{- end }}
+      {{- if .Values.consulTemplate.enabled }}
       - name: consul-template
         image: "{{ .Values.consulTemplate.repo }}:{{ .Values.consulTemplate.tag }}"
         imagePullPolicy: {{ .Values.consulTemplate.pullPolicy }}
@@ -94,6 +95,7 @@ spec:
             - cat
             - /pid/consul-template
           initialDelaySeconds: 10
+      {{- end }}
       {{- if .Values.vaultAgent.enabled }}
       - name: vault-agent
         image: "{{ .Values.vaultAgent.repo }}:{{ .Values.vaultAgent.tag }}"
@@ -136,17 +138,26 @@ spec:
       {{- end }}
       volumes:
       - name: telegraf-config
+        {{- if .Values.consulTemplate.enabled }}
         emptyDir: {}
+        {{- else }}
+        configMap:
+          name: {{ include "telegraf.fullname" . }}-tpl
+        {{- end }}
       - name: output
         emptyDir: {}
       - name: pid
         emptyDir: {}
-      - name: ct
-        configMap:
-          name: {{ include "telegraf.fullname" . }}-ct
+      {{- if .Values.vaultAgent.enabled }}
       - name: vault-config
         configMap:
           name: {{ include "telegraf.fullname" . }}-vault
+      {{- end }}
+      {{- if .Values.consulTemplate.enabled }}
       - name: templates
         configMap:
           name: {{ include "telegraf.fullname" . }}-tpl
+      - name: ct
+        configMap:
+          name: {{ include "telegraf.fullname" . }}-ct
+      {{- end }}
