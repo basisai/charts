@@ -18,10 +18,20 @@ spec:
     solvers:
     - selector: {}
       dns01:
+        {{- if eq .Values.acme_solver "clouddns" }}
         clouddns:
           # The ID of the GCP project
-          project: {{ required "Need to specify GCP project ID" .Values.clouddns.gcp_project_id }}
+          project: {{ .Values.clouddns.gcp_project_id }}
           # This is the secret used to access the service account
           serviceAccountSecretRef:
             name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
-            key: key.json
+            key: gcp-service-account-key.json
+        {{- end }}
+        {{- if eq .Values.acme_solver "route53" }}
+        route53:
+          region: {{ .Values.route53.aws_region }}
+          accessKeyID: {{ .Values.route53.aws_access_key_id }}
+          secretAccessKeySecretRef:
+            name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
+            key: aws-secret-access-key
+        {{- end }}
