@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager-aio.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "cert-manager-aio.fullname" . }}-certificate
+spec:
+  secretName: {{ include "cert-manager-aio.fullname" . }}-certificate
+  issuerRef:
+    name: {{ include "cert-manager-aio.fullname" . }}-issuer
+    kind: Issuer
+  commonName: {{ printf "*.%s" .Values.domain_name | quote }}
+  dnsNames:
+  - {{ .Values.domain_name }}
+  - {{ printf "*.%s" .Values.domain_name | quote }}

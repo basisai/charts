@@ -1,0 +1,27 @@
+---
+apiVersion: cert-manager-aio.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "cert-manager-aio.fullname" . }}-issuer
+spec:
+  acme:
+    {{- if eq .Values.lets_encrypt.environment "production" }}
+    server: https://acme-v02.api.letsencrypt.org/directory
+    {{- end }}
+    {{- if eq .Values.lets_encrypt.environment "staging" }}
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    {{- end }}
+    email: {{ .Values.lets_encrypt.email }}
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: {{ include "cert-manager-aio.fullname" . }}-issuer
+    solvers:
+    - selector: {}
+      dns01:
+        clouddns:
+          # The ID of the GCP project
+          project: {{ required "Need to specify GCP project ID" .Values.clouddns.gcp_project_id }}
+          # This is the secret used to access the service account
+          serviceAccountSecretRef:
+            name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
+            key: key.json
