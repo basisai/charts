@@ -1,5 +1,5 @@
 ---
-apiVersion: cert-manager-aio.io/v1alpha2
+apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: {{ include "cert-manager-aio.fullname" . }}-issuer
@@ -22,16 +22,22 @@ spec:
         clouddns:
           # The ID of the GCP project
           project: {{ .Values.clouddns.gcp_project_id }}
+          {{- if .Values.clouddns.service_account_key }}
           # This is the secret used to access the service account
           serviceAccountSecretRef:
             name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
             key: gcp-service-account-key.json
+          {{- end }}
         {{- end }}
         {{- if eq .Values.acme_solver "route53" }}
         route53:
           region: {{ .Values.route53.aws_region }}
+          hostedZoneID: {{ .Values.route53.zone_id }}
+          {{- if .Values.route53.aws_secret_access_key }}
           accessKeyID: {{ .Values.route53.aws_access_key_id }}
           secretAccessKeySecretRef:
             name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
             key: aws-secret-access-key
+          {{- end }}
+          role: {{ .Values.route53.aws_iam_role }}
         {{- end }}

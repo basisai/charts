@@ -14,11 +14,16 @@ acme_solver: clouddns
 
 route53:
   aws_region: ap-southeast-1
-  aws_access_key_id: ""
-  aws_secret_access_key: ""
+  zone_id: ""
+  # Set aws_secret_access_key to null if getting credentials via EC2 Metadata Service
+  aws_access_key_id: null
+  aws_secret_access_key: null
+  # Assume IAM role
+  aws_iam_role: null
 
 clouddns:
-  gcp_project_id: ""
-  service_account_key: ""
+  gcp_project_id: null
+  # Set service_account_key to null if getting credentials via metadata server
+  service_account_key: null
 
 domain_name: example.com
