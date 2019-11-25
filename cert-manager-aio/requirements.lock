@@ -1,5 +1,5 @@
 dependencies:
-- name: cert-manager-aio
+- name: cert-manager
   repository: https://charts.jetstack.io
   version: v0.12.0-beta.1
 digest: sha256:d975712c011f5546b3bd88add5b54958f043e535dd718f9c60fb8c3b9420fdea
