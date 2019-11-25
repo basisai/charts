@@ -7,7 +7,7 @@ spec:
   secretName: {{ include "cert-manager-aio.fullname" . }}-certificate
   issuerRef:
     name: {{ include "cert-manager-aio.fullname" . }}-issuer
-    kind: Issuer
+    kind: ClusterIssuer
   commonName: {{ printf "*.%s" .Values.domain_name | quote }}
   dnsNames:
   - {{ .Values.domain_name }}
