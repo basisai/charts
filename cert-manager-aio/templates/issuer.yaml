@@ -39,5 +39,7 @@ spec:
             name: {{ include "cert-manager-aio.fullname" . }}-acme-solver-secret
             key: aws-secret-access-key
           {{- end }}
+          {{- if .Values.route53.aws_iam_role }}
           role: {{ .Values.route53.aws_iam_role }}
+          {{- end }}
         {{- end }}
