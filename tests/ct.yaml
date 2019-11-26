@@ -1,3 +1,5 @@
 validate-maintainers: false
 chart-dirs:
 - /charts
+chart-repos:
+  - jetstack=https://charts.jetstack.io
