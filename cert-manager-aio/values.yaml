@@ -26,4 +26,5 @@ clouddns:
   # Set service_account_key to null if getting credentials via metadata server
   service_account_key: null
 
-domain_name: example.com
+domain_names:
+- example.com
