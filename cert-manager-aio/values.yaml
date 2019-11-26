@@ -26,5 +26,6 @@ clouddns:
   # Set service_account_key to null if getting credentials via metadata server
   service_account_key: null
 
-domain_names:
+# Creates wildcard cert for each domain name specified here. No certs will be created if this field is empty.
+certificate_domains:
 - example.com

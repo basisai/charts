@@ -1,17 +1,18 @@
 {{ $root := . }}
-{{ range $i, $domain_name := $root.Values.domain_names }}
+{{ range $i, $domain := $root.Values.certificate_domains }}
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ include "cert-manager-aio.fullname" $root }}-cert-{{ $i }}
+  namespace: {{ $namespace }}
 spec:
   secretName: {{ include "cert-manager-aio.fullname" $root }}-cert-{{ $i }}
   issuerRef:
     name: {{ include "cert-manager-aio.fullname" $root }}-issuer
     kind: ClusterIssuer
-  commonName: {{ printf "*.%s" $domain_name | quote }}
+  commonName: {{ printf "*.%s" $domain | quote }}
   dnsNames:
-  - {{ $domain_name }}
-  - {{ printf "*.%s" $domain_name | quote }}
+  - {{ $domain }}
+  - {{ printf "*.%s" $domain | quote }}
 {{ end }}
