@@ -27,5 +27,10 @@ clouddns:
   service_account_key: null
 
 # Creates wildcard cert for each domain name specified here. No certs will be created if this field is empty.
-certificate_domains:
-- example.com
+certificates:
+  - common_name: '*.example.com'
+    san:
+      - 'example.com'
+      - '*.example.com'
+    # Duration in advance to renew cert before expiry. Must only be specifed using s, m, and h suffixes (seconds, minutes and hours respectively).
+    renew_before: '24h'
