@@ -13,7 +13,7 @@ spec:
   renewBefore: {{ $domain.renew_before }}
   commonName: {{ $domain.common_name | quote }}
   dnsNames:
-    {{- with $domain.san }}
+    {{- with uniq (append $domain.san $domain.common_name) }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 {{ end }}
