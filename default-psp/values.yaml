@@ -1,0 +1,37 @@
+psp:
+  annotations:
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: 'docker/default,runtime/default'
+    apparmor.security.beta.kubernetes.io/allowedProfileNames: 'runtime/default'
+    seccomp.security.alpha.kubernetes.io/defaultProfileName:  'runtime/default'
+    apparmor.security.beta.kubernetes.io/defaultProfileName:  'runtime/default'
+  spec:
+    privileged: false
+    allowPrivilegeEscalation: false
+    volumes:
+      - '*'
+    hostNetwork: false
+    hostIPC: false
+    hostPID: false
+    runAsUser:
+      rule: 'RunAsAny'
+    supplementalGroups:
+      rule: 'RunAsAny'
+    fsGroup:
+      rule: 'RunAsAny'
+    readOnlyRootFilesystem: false
+    seLinux:
+      # This policy assumes the nodes are using AppArmor rather than SELinux.
+      rule: 'RunAsAny'
+    allowedCapabilities:
+      - IPC_LOCK
+    forbiddenSysctls:
+      - "*"
+clusterrole:
+  labels:
+    rbac.authorization.k8s.io/aggregate-to-admin: "true"
+    rbac.authorization.k8s.io/aggregate-to-edit: "true"
+clusterrolebinding:
+  subjects:
+  - kind: Group
+    name: system:serviceaccounts
+    apiGroup: rbac.authorization.k8s.io

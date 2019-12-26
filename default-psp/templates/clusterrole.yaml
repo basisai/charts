@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "default-psp.fullname" . }}
+  labels:
+{{ toYaml .Values.clusterrole.labels | indent 4 }}
+rules:
+- apiGroups: ['policy']
+  resources: ['podsecuritypolicies']
+  verbs:     ['use']
+  resourceNames:
+  - {{ include "default-psp.fullname" . }}
