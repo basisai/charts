@@ -53,6 +53,8 @@ port: 5432
 service:
   type: ClusterIP
   port: 5432
+  sessionAffinity:
+    timeoutSeconds: 7200
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
