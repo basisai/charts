@@ -8,7 +8,13 @@ psp:
     privileged: false
     allowPrivilegeEscalation: false
     volumes:
-      - "*"
+      - "configMap"
+      - "emptyDir"
+      - "projected"
+      - "secret"
+      - "downwardAPI"
+      # Assume that persistentVolumes set up by the cluster admin are safe to use.
+      - "persistentVolumeClaim"
     hostNetwork: false
     hostIPC: false
     hostPID: false
