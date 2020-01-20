@@ -51,14 +51,14 @@ spec:
           command: ['sh','-c','']
       containers:
         - name: fluentd-cloudwatch
-          image: fluent/fluentd-kubernetes-daemonset:v1.3.3-debian-cloudwatch-1.4
+          image: {{ .Values.image }}:{{ .Values.imageTag }}
           env:
             - name: REGION
               value: {{ required "Name of the AWS region" .Values.awsRegion }}
             - name: CLUSTER_NAME
               value: {{ required "Name of the EKS cluster" .Values.clusterName }}
             - name: CI_VERSION
-              value: "k8s/1.0.0"
+              value: "k8s/1.0.1"
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
