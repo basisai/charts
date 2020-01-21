@@ -157,6 +157,7 @@ data:
       # BEGIN Archive cluster logs to S3
       <match **>
         @type s3
+        @log_level debug
         s3_bucket "#{ENV.fetch('S3_BUCKET')}"
         s3_region "#{ENV.fetch('REGION')}"
         path "#{ENV.fetch('CLUSTER_NAME')}/application/"
@@ -164,9 +165,9 @@ data:
         </instance_profile_credentials>
         # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
         # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
-        <buffer tag,time>
+        <buffer>
           @type file
-          path /fluentd/buffer/application.*.buffer
+          path /fluentd/buffer/application
           timekey 180
           timekey_wait 1m
           timekey_use_utc true
@@ -266,6 +267,7 @@ data:
       # BEGIN Archive cluster logs to S3
       <match **>
         @type s3
+        @log_level debug
         s3_bucket "#{ENV.fetch('S3_BUCKET')}"
         s3_region "#{ENV.fetch('REGION')}"
         path "#{ENV.fetch('CLUSTER_NAME')}/dataplane/"
@@ -273,9 +275,9 @@ data:
         </instance_profile_credentials>
         # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
         # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
-        <buffer tag,time>
+        <buffer>
           @type file
-          path /fluentd/buffer/dataplane.*.buffer
+          path /fluentd/buffer/dataplane
           timekey 180
           timekey_wait 1m
           timekey_use_utc true
@@ -357,6 +359,7 @@ data:
       # BEGIN Archive cluster logs to S3
       <match host.**>
         @type s3
+        @log_level debug
         s3_bucket "#{ENV.fetch('S3_BUCKET')}"
         s3_region "#{ENV.fetch('REGION')}"
         path "#{ENV.fetch('CLUSTER_NAME')}/host/"
@@ -364,9 +367,9 @@ data:
         </instance_profile_credentials>
         # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
         # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
-        <buffer tag,time>
+        <buffer>
           @type file
-          path /fluentd/buffer/host.*.buffer
+          path /fluentd/buffer/host
           timekey 180
           timekey_wait 1m
           timekey_use_utc true
