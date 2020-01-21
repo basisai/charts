@@ -13,6 +13,7 @@ imageTag: v1.7.3-debian-cloudwatch-1.0
 
 awsRegion: ""
 clusterName: ""
+s3Bucket: ""
 
 resources:
   limits:
