@@ -170,8 +170,8 @@ data:
           <buffer tag,time>
             @type file
             path /fluentd/buffer/application
-            timekey 180
-            timekey_wait 1m
+            timekey 3600
+            timekey_wait 10m
             timekey_use_utc true
           </buffer>
         </store>
@@ -283,8 +283,8 @@ data:
           <buffer tag,time>
             @type file
             path /fluentd/buffer/dataplane
-            timekey 180
-            timekey_wait 1m
+            timekey 3600
+            timekey_wait 10m
             timekey_use_utc true
           </buffer>
         </store>
@@ -378,8 +378,8 @@ data:
           <buffer tag,time>
             @type file
             path /fluentd/buffer/host
-            timekey 180
-            timekey_wait 1m
+            timekey 3600
+            timekey_wait 10m
             timekey_use_utc true
           </buffer>
         </store>
