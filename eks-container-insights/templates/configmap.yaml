@@ -155,16 +155,18 @@ data:
       </match>
 
       # BEGIN Archive cluster logs to S3
-      <match pattern>
+      <match **>
         @type s3
         s3_bucket "#{ENV.fetch('S3_BUCKET')}"
         s3_region "#{ENV.fetch('REGION')}"
         path "#{ENV.fetch('CLUSTER_NAME')}/application/"
+        <instance_profile_credentials>
+        </instance_profile_credentials>
         # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
         # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
         <buffer tag,time>
           @type file
-          path /fluentd/buffer/s3
+          path /fluentd/buffer/application.*.buffer
           timekey 180
           timekey_wait 1m
           timekey_use_utc true
@@ -260,6 +262,27 @@ data:
           retry_forever true
         </buffer>
       </match>
+
+      # BEGIN Archive cluster logs to S3
+      <match **>
+        @type s3
+        s3_bucket "#{ENV.fetch('S3_BUCKET')}"
+        s3_region "#{ENV.fetch('REGION')}"
+        path "#{ENV.fetch('CLUSTER_NAME')}/dataplane/"
+        <instance_profile_credentials>
+        </instance_profile_credentials>
+        # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
+        # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
+        <buffer tag,time>
+          @type file
+          path /fluentd/buffer/dataplane.*.buffer
+          timekey 180
+          timekey_wait 1m
+          timekey_use_utc true
+          chunk_limit_size 256m
+        </buffer>
+      </match>
+      # END Archive cluster logs to S3
     </label>
   host.conf: |
     <source>
@@ -330,4 +353,25 @@ data:
           retry_forever true
         </buffer>
       </match>
+
+      # BEGIN Archive cluster logs to S3
+      <match host.**>
+        @type s3
+        s3_bucket "#{ENV.fetch('S3_BUCKET')}"
+        s3_region "#{ENV.fetch('REGION')}"
+        path "#{ENV.fetch('CLUSTER_NAME')}/host/"
+        <instance_profile_credentials>
+        </instance_profile_credentials>
+        # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
+        # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
+        <buffer tag,time>
+          @type file
+          path /fluentd/buffer/host.*.buffer
+          timekey 180
+          timekey_wait 1m
+          timekey_use_utc true
+          chunk_limit_size 256m
+        </buffer>
+      </match>
+      # END Archive cluster logs to S3
     </label>
