@@ -8,8 +8,8 @@ fullnameOverride: ""
 priorityClassName: "system-node-critical"
 serviceAccountName: fluentd
 
-image: fluent/fluentd-kubernetes-daemonset
-imageTag: v1.7.3-debian-cloudwatch-1.0
+image: basisai/eks-container-insights
+imageTag: v1.7.3
 
 awsRegion: ""
 clusterName: ""
