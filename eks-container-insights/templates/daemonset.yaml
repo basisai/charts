@@ -62,6 +62,10 @@ spec:
             # BEGIN Archive cluster logs to S3
             - name: S3_BUCKET
               value: {{ .Values.s3Bucket }}
+            - name: KUBERNETES_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
             # END Archive cluster logs to S3
           resources:
 {{ toYaml .Values.resources | indent 12 }}

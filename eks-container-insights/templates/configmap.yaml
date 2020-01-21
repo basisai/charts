@@ -162,7 +162,7 @@ data:
           @type s3
           s3_bucket "#{ENV.fetch('S3_BUCKET')}"
           s3_region "#{ENV.fetch('REGION')}"
-          path "#{ENV.fetch('CLUSTER_NAME')}/application/${tag}/%Y%m%d/"
+          path "#{ENV.fetch('CLUSTER_NAME')}/application/${tag}/"
           <instance_profile_credentials>
           </instance_profile_credentials>
           # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
@@ -275,7 +275,7 @@ data:
           @type s3
           s3_bucket "#{ENV.fetch('S3_BUCKET')}"
           s3_region "#{ENV.fetch('REGION')}"
-          path "#{ENV.fetch('CLUSTER_NAME')}/dataplane/${tag}/%Y%m%d/"
+          path "#{ENV.fetch('CLUSTER_NAME')}/dataplane/${tag}-#{ENV.fetch('KUBERNETES_NODE_NAME')}/"
           <instance_profile_credentials>
           </instance_profile_credentials>
           # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
@@ -370,7 +370,7 @@ data:
           @type s3
           s3_bucket "#{ENV.fetch('S3_BUCKET')}"
           s3_region "#{ENV.fetch('REGION')}"
-          path "#{ENV.fetch('CLUSTER_NAME')}/host/${tag}/%Y%m%d/"
+          path "#{ENV.fetch('CLUSTER_NAME')}/host/${tag}-#{ENV.fetch('KUBERNETES_NODE_NAME')}/"
           <instance_profile_credentials>
           </instance_profile_credentials>
           # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
