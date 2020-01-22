@@ -59,6 +59,7 @@ spec:
               value: {{ required "Name of the EKS cluster" .Values.clusterName }}
             - name: CI_VERSION
               value: "k8s/1.0.1"
+            {{- if .Values.logToS3Bucket }}
             # BEGIN Archive cluster logs to S3
             - name: S3_BUCKET
               value: {{ .Values.s3Bucket }}
@@ -67,6 +68,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             # END Archive cluster logs to S3
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:

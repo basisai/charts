@@ -157,6 +157,7 @@ data:
           </buffer>
         </store>
 
+        {{- if .Values.logToS3Bucket }}
         # BEGIN Archive cluster logs to S3
         <store>
           @type s3
@@ -176,6 +177,7 @@ data:
           </buffer>
         </store>
         # END Archive cluster logs to S3
+        {{- end }}
 
       </match>
     </label>
@@ -270,6 +272,7 @@ data:
           </buffer>
         </store>
 
+        {{- if .Values.logToS3Bucket }}
         # BEGIN Archive cluster logs to S3
         <store>
           @type s3
@@ -289,6 +292,7 @@ data:
           </buffer>
         </store>
         # END Archive cluster logs to S3
+        {{- end }}
 
       </match>
     </label>
@@ -365,6 +369,7 @@ data:
           </buffer>
         </store>
 
+        {{- if .Values.logToS3Bucket }}
         # BEGIN Archive cluster logs to S3
         <store>
           @type s3
@@ -384,6 +389,7 @@ data:
           </buffer>
         </store>
         # END Archive cluster logs to S3
+        {{- end }}
 
       </match>
     </label>

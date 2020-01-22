@@ -13,6 +13,8 @@ imageTag: v1.7.3
 
 awsRegion: ""
 clusterName: ""
+
+logToS3Bucket: false
 s3Bucket: ""
 
 resources:
