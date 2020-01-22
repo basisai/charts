@@ -139,19 +139,44 @@ data:
 
     <label @NORMAL>
       <match **>
-        @type cloudwatch_logs
-        @id out_cloudwatch_logs_containers
-        region "#{ENV.fetch('REGION')}"
-        log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/application"
-        log_stream_name_key stream_name
-        remove_log_stream_name_key true
-        auto_create_stream true
-        <buffer>
-          flush_interval 5
-          chunk_limit_size 2m
-          queued_chunks_limit_size 32
-          retry_forever true
-        </buffer>
+        @type copy
+
+        <store>
+          @type cloudwatch_logs
+          @id out_cloudwatch_logs_containers
+          region "#{ENV.fetch('REGION')}"
+          log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/application"
+          log_stream_name_key stream_name
+          remove_log_stream_name_key true
+          auto_create_stream true
+          <buffer>
+            flush_interval 5
+            chunk_limit_size 2m
+            queued_chunks_limit_size 32
+            retry_forever true
+          </buffer>
+        </store>
+
+        # BEGIN Archive cluster logs to S3
+        <store>
+          @type s3
+          s3_bucket "#{ENV.fetch('S3_BUCKET')}"
+          s3_region "#{ENV.fetch('REGION')}"
+          path "#{ENV.fetch('CLUSTER_NAME')}/application/${tag}/"
+          <instance_profile_credentials>
+          </instance_profile_credentials>
+          # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
+          # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
+          <buffer tag,time>
+            @type file
+            path /fluentd/buffer/application
+            timekey 3600
+            timekey_wait 10m
+            timekey_use_utc true
+          </buffer>
+        </store>
+        # END Archive cluster logs to S3
+
       </match>
     </label>
   systemd.conf: |
@@ -227,19 +252,44 @@ data:
       </filter>
 
       <match **>
-        @type cloudwatch_logs
-        @id out_cloudwatch_logs_systemd
-        region "#{ENV.fetch('REGION')}"
-        log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/dataplane"
-        log_stream_name_key stream_name
-        auto_create_stream true
-        remove_log_stream_name_key true
-        <buffer>
-          flush_interval 5
-          chunk_limit_size 2m
-          queued_chunks_limit_size 32
-          retry_forever true
-        </buffer>
+        @type copy
+
+        <store>
+          @type cloudwatch_logs
+          @id out_cloudwatch_logs_systemd
+          region "#{ENV.fetch('REGION')}"
+          log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/dataplane"
+          log_stream_name_key stream_name
+          auto_create_stream true
+          remove_log_stream_name_key true
+          <buffer>
+            flush_interval 5
+            chunk_limit_size 2m
+            queued_chunks_limit_size 32
+            retry_forever true
+          </buffer>
+        </store>
+
+        # BEGIN Archive cluster logs to S3
+        <store>
+          @type s3
+          s3_bucket "#{ENV.fetch('S3_BUCKET')}"
+          s3_region "#{ENV.fetch('REGION')}"
+          path "#{ENV.fetch('CLUSTER_NAME')}/dataplane/${tag}-#{ENV.fetch('KUBERNETES_NODE_NAME')}/"
+          <instance_profile_credentials>
+          </instance_profile_credentials>
+          # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
+          # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
+          <buffer tag,time>
+            @type file
+            path /fluentd/buffer/dataplane
+            timekey 3600
+            timekey_wait 10m
+            timekey_use_utc true
+          </buffer>
+        </store>
+        # END Archive cluster logs to S3
+
       </match>
     </label>
   host.conf: |
@@ -297,18 +347,43 @@ data:
       </filter>
 
       <match host.**>
-        @type cloudwatch_logs
-        @id out_cloudwatch_logs_host_logs
-        region "#{ENV.fetch('REGION')}"
-        log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/host"
-        log_stream_name_key stream_name
-        remove_log_stream_name_key true
-        auto_create_stream true
-        <buffer>
-          flush_interval 5
-          chunk_limit_size 2m
-          queued_chunks_limit_size 32
-          retry_forever true
-        </buffer>
+        @type copy
+
+        <store>
+          @type cloudwatch_logs
+          @id out_cloudwatch_logs_host_logs
+          region "#{ENV.fetch('REGION')}"
+          log_group_name "/aws/containerinsights/#{ENV.fetch('CLUSTER_NAME')}/host"
+          log_stream_name_key stream_name
+          remove_log_stream_name_key true
+          auto_create_stream true
+          <buffer>
+            flush_interval 5
+            chunk_limit_size 2m
+            queued_chunks_limit_size 32
+            retry_forever true
+          </buffer>
+        </store>
+
+        # BEGIN Archive cluster logs to S3
+        <store>
+          @type s3
+          s3_bucket "#{ENV.fetch('S3_BUCKET')}"
+          s3_region "#{ENV.fetch('REGION')}"
+          path "#{ENV.fetch('CLUSTER_NAME')}/host/${tag}-#{ENV.fetch('KUBERNETES_NODE_NAME')}/"
+          <instance_profile_credentials>
+          </instance_profile_credentials>
+          # if you want to use ${tag} or %Y/%m/%d/ like syntax in path / s3_object_key_format,
+          # need to specify tag for ${tag} and time for %Y/%m/%d in <buffer> argument.
+          <buffer tag,time>
+            @type file
+            path /fluentd/buffer/host
+            timekey 3600
+            timekey_wait 10m
+            timekey_use_utc true
+          </buffer>
+        </store>
+        # END Archive cluster logs to S3
+
       </match>
     </label>
