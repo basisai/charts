@@ -25,7 +25,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
-      serviceAccountName: {{ .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       shareProcessNamespace: true
       containers:
       - name: {{ .Chart.Name }}
@@ -48,10 +48,12 @@ spec:
         - name: output
           mountPath: /output
         {{- if .Values.probes.liveness }}
-{{ toYaml .Values.probes.liveness | indent 10 }}
+        livenessProbe:
+          {{ toYaml .Values.probes.liveness | nindent 10 }}
         {{- end }}
         {{- if .Values.probes.readiness }}
-{{ toYaml .Values.probes.readiness | indent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.probes.readiness | nindent 10 }}
         {{- end }}
       {{- if .Values.consulTemplate.enabled }}
       - name: consul-template
@@ -109,7 +111,7 @@ spec:
                 - revoke
                 - -self
         resources:
-{{ toYaml .Values.vaultAgent.resources | nindent 10 }}
+          {{- toYaml .Values.vaultAgent.resources | nindent 10 }}
         volumeMounts:
           - name: pid
             mountPath: /pid
@@ -120,7 +122,7 @@ spec:
             readOnly: true
         {{- if .Values.vaultAgent.env }}
         env:
-{{ toYaml .Values.vaultAgent.env | nindent 10 }}
+          {{- toYaml .Values.vaultAgent.env | nindent 10 }}
         {{- end }}
         command:
           - /bin/vault
