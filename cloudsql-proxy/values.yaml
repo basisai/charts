@@ -5,8 +5,10 @@
 replicaCount: 1
 
 deploymentStrategy:
-  maxSurge: 1
-  maxUnavailable: 0
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  type: RollingUpdate
 
 image:
   repository: gcr.io/cloudsql-docker/gce-proxy
