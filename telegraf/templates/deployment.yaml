@@ -48,10 +48,12 @@ spec:
         - name: output
           mountPath: /output
         {{- if .Values.probes.liveness }}
-{{ toYaml .Values.probes.liveness | indent 10 }}
+        livenessProbe:
+          {{ toYaml .Values.probes.liveness | nindent 10 }}
         {{- end }}
         {{- if .Values.probes.readiness }}
-{{ toYaml .Values.probes.readiness | indent 10 }}
+        readinessProbe:
+          {{ toYaml .Values.probes.readiness | nindent 10 }}
         {{- end }}
       {{- if .Values.consulTemplate.enabled }}
       - name: consul-template
