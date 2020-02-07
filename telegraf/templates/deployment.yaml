@@ -25,7 +25,7 @@ spec:
         {{ $key }}: {{ $value | quote }}
       {{- end }}
     spec:
-      serviceAccountName: {{ .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       shareProcessNamespace: true
       containers:
       - name: {{ .Chart.Name }}
@@ -111,7 +111,7 @@ spec:
                 - revoke
                 - -self
         resources:
-{{ toYaml .Values.vaultAgent.resources | nindent 10 }}
+          {{- toYaml .Values.vaultAgent.resources | nindent 10 }}
         volumeMounts:
           - name: pid
             mountPath: /pid
@@ -122,7 +122,7 @@ spec:
             readOnly: true
         {{- if .Values.vaultAgent.env }}
         env:
-{{ toYaml .Values.vaultAgent.env | nindent 10 }}
+          {{- toYaml .Values.vaultAgent.env | nindent 10 }}
         {{- end }}
         command:
           - /bin/vault
