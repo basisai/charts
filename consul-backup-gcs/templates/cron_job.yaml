@@ -56,6 +56,7 @@ spec:
           serviceAccountName: {{ .Values.serviceAccount }}
           automountServiceAccountToken: true
           restartPolicy: OnFailure
+          {{- if .Values.vault.enabled }}
           initContainers:
             - name: vault-agent
               image: "{{ .Values.vault.image }}:{{ .Values.vault.tag }}"
@@ -85,36 +86,7 @@ spec:
                 - -config=/config/vault_agent.hcl
               resources:
                 {{- toYaml .Values.resources.consulTemplate | nindent 16 }}
-            - name: consul-template
-              image: "{{ .Values.consulTemplate.image }}:{{ .Values.consulTemplate.tag }}"
-              imagePullPolicy: {{ .Values.consulTemplate.pullPolicy }}
-              resources:
-                {{- toYaml .Values.resources.consulTemplate | nindent 16 }}
-              volumeMounts:
-                - name: config
-                  mountPath: /config
-                  readOnly: true
-                - name: vault-token
-                  mountPath: /vault
-                  readOnly: true
-                - name: gcp-service-account
-                  mountPath: /gcp
-              env:
-                - name: VAULT_ADDR
-                  value: {{ include "vaultAddress" . | quote }}
-                - name: VAULT_CAPATH
-                  value: /config/vault_ca.pem
-                {{- if .Values.consulTemplate.env }}
-                {{- toYaml .Values.consulTemplate.env | nindent 16 }}
-                {{- end }}
-              command:
-                - "/bin/consul-template"
-              args:
-                - "-once"
-                - "-config=/config/consul_template.hcl"
-                - "-log-level=debug"
-              resources:
-                {{- toYaml .Values.resources.consulTemplate | nindent 16 }}
+          {{- end }}
           containers:
             - name: {{ .Chart.Name }}
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -122,17 +94,21 @@ spec:
               resources:
                 {{- toYaml .Values.resources.backup | nindent 16 }}
               volumeMounts:
+                {{- if .Values.vault.enabled }}
                 - name: gcp-service-account
                   mountPath: /gcp
+                {{- end }}
                 - name: config
                   mountPath: /config
                   readOnly: true
               env:
+                {{- if .Values.vault.enabled }}
                 - name: GOOGLE_CREDENTIALS
                   value: /gcp/service_account.json
-                {{- if .Values.env }}
-                {{- toYaml .Values.env | nindent 16 }}
                 {{- end }}
+              {{- with .Values.env }}
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
               args:
                 - "ansible-playbook"
                 - '--inventory'
@@ -144,19 +120,12 @@ spec:
             - name: config
               configMap:
                 name: {{ include "consul-backup-gcs.fullname" . }}
-                items:
-                  - key: vaultAgent
-                    path: vault_agent.hcl
-                  - key: consulTemplate
-                    path: consul_template.hcl
-                  - key: vaultCA
-                    path: vault_ca.pem
-                  - key: ansible
-                    path: vars.yml
+            {{- if .Values.vault.enabled }}
             - name: vault-token
               emptyDir: {}
             - name: gcp-service-account
               emptyDir: {}
+            {{- end }}
           {{- with .Values.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}

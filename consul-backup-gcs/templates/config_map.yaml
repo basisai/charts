@@ -17,40 +17,17 @@ metadata:
     {{- end }}
   {{- end }}
 data:
-  ansible: |
+  vars.yml: |
     consul_environment:
       CONSUL_HTTP_ADDR: {{ .Values.consul.address }}
     gcs_bucket: {{ required "GCS bucket is required" .Values.gcs.bucket }}
     gcs_prefix: {{ .Values.gcs.prefix }}
+    {{- if .Values.vault.enabled }}
     service_account_key: /gcp/service_account.json
-  consulTemplate: |
-    pid_file = "/pid"
-    kill_signal = "SIGTERM"
-
-    vault {
-      vault_agent_token_file = "/vault/token"
-
-      ssl {
-        enabled = true
-      }
-    }
-
-    template {
-      left_delimiter = "||"
-      right_delimiter = "||"
-
-      contents = <<-EOF
-      ||- with secret "{{ required "GCP secrets backend path is needed" .Values.vault.gcp.path }}" -||
-      ||- .Data.private_key_data | base64Decode -||
-      ||- end -||
-      EOF
-
-      destination = "/gcp/service_account.json"
-      create_dest_dirs = true
-      error_on_missing_key = true
-    }
-  vaultCA: {{ required "Vault CA is required" .Values.vault.ca | quote }}
-  vaultAgent: |
+    {{- end }}
+  {{- if .Values.vault.enabled }}
+  vault_ca.pem: {{ required "Vault CA is required" .Values.vault.ca | quote }}
+  vault_agent.hcl: |
     pid_file = "/pid"
     exit_after_auth = true
 
@@ -70,3 +47,19 @@ data:
         }
       }
     }
+
+    template {
+      left_delimiter = "||"
+      right_delimiter = "||"
+
+      contents = <<-EOF
+      ||- with secret "{{ required "GCP secrets backend path is needed" .Values.vault.gcp.path }}" -||
+      ||- .Data.private_key_data | base64Decode -||
+      ||- end -||
+      EOF
+
+      destination = "/gcp/service_account.json"
+      create_dest_dirs = true
+      error_on_missing_key = true
+    }
+  {{- end }}
