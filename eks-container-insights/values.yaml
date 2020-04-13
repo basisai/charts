@@ -17,6 +17,8 @@ clusterName: ""
 logToS3Bucket: false
 s3Bucket: ""
 
+containers_logs_additional_filter_configs: []
+
 resources:
   limits:
     cpu: 200m

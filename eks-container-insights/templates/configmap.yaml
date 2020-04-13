@@ -102,6 +102,14 @@ data:
         timeout_label @NORMAL
       </filter>
 
+      # BEGIN: Additional config for containers
+      {{- range .Values.containers_logs_additional_filter_configs }}
+      <filter **>
+        {{ . | indent 8 }}
+      </filter>
+      {{- end }}
+      # END: Additional config for containers
+
       <match **>
         @type relabel
         @label @NORMAL
