@@ -17,7 +17,9 @@ clusterName: ""
 logToS3Bucket: false
 s3Bucket: ""
 
-containers_logs_additional_filter_configs: []
+additional_container_logs_filters: []
+additional_systemd_logs_filters: []
+additional_host_logs_filters: []
 
 resources:
   limits:
