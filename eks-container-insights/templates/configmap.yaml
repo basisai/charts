@@ -105,7 +105,7 @@ data:
       # BEGIN: Additional filters for container logs
       {{- range .Values.additional_container_logs_filters }}
       <filter **>
-        {{ . | indent 8 }}
+        {{ . | nindent 8 }}
       </filter>
       {{- end }}
       # END: Additional filters for container logs
@@ -264,7 +264,7 @@ data:
       # BEGIN: Additional filters for systemd logs
       {{- range .Values.additional_systemd_logs_filters }}
       <filter **>
-        {{ . | indent 8 }}
+        {{ . | nindent 8 }}
       </filter>
       {{- end }}
       # END: Additional filters for systemd logs
@@ -369,7 +369,7 @@ data:
       # BEGIN: Additional filters for host logs
       {{- range .Values.additional_host_logs_filters }}
       <filter **>
-        {{ . | indent 8 }}
+        {{ . | nindent 8 }}
       </filter>
       {{- end }}
       # END: Additional filters for host logs
