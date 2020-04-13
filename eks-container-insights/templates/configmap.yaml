@@ -102,6 +102,14 @@ data:
         timeout_label @NORMAL
       </filter>
 
+      # BEGIN: Additional filters for container logs
+      {{- range .Values.additional_container_logs_filters }}
+      <filter **>
+        {{ . | nindent 8 }}
+      </filter>
+      {{- end }}
+      # END: Additional filters for container logs
+
       <match **>
         @type relabel
         @label @NORMAL
@@ -253,6 +261,14 @@ data:
         </record>
       </filter>
 
+      # BEGIN: Additional filters for systemd logs
+      {{- range .Values.additional_systemd_logs_filters }}
+      <filter **>
+        {{ . | nindent 8 }}
+      </filter>
+      {{- end }}
+      # END: Additional filters for systemd logs
+
       <match **>
         @type copy
 
@@ -349,6 +365,14 @@ data:
           stream_name ${tag}-${record["host"]}
         </record>
       </filter>
+
+      # BEGIN: Additional filters for host logs
+      {{- range .Values.additional_host_logs_filters }}
+      <filter **>
+        {{ . | nindent 8 }}
+      </filter>
+      {{- end }}
+      # END: Additional filters for host logs
 
       <match host.**>
         @type copy
