@@ -2,8 +2,22 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# Override cert-manager-aio chart values https://github.com/jetstack/cert-manager-aio/blob/master/deploy/charts/cert-manager-aio/values.yaml
-# cert-manager-aio: {}
+# Override cert-manager chart values https://github.com/jetstack/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
+cert-manager:
+  global:
+    rbac:
+      create: true
+    podSecurityPolicy:
+      enabled: false
+      useAppArmor: true
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # The name of the service account to use.
+    # If not set and create is true, a name is generated using the fullname template
+    # name: ""
+    # Optional additional annotations to add to the controller's ServiceAccount
+    # annotations: {}
 
 lets_encrypt:
   environment: staging
