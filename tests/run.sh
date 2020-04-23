@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-TEST_IMAGE="${TEST_IMAGE:-quay.io/helmpack/chart-testing:v2.3.3}"
+TEST_IMAGE="${TEST_IMAGE:-quay.io/helmpack/chart-testing:v3.0.0-rc.1}"
 
 docker run --rm -v "$(pwd):/charts" --workdir "/charts" \
     "${TEST_IMAGE}" \

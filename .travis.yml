@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - TEST_IMAGE="quay.io/helmpack/chart-testing:v2.2.0"
+    - TEST_IMAGE="quay.io/helmpack/chart-testing:v3.0.0-rc.1"
 
 script:
   - tests/run.sh
