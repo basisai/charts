@@ -8,7 +8,7 @@ cert-manager:
     rbac:
       create: true
     podSecurityPolicy:
-      enabled: false
+      enabled: true
       useAppArmor: true
   serviceAccount:
     # Specifies whether a service account should be created
