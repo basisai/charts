@@ -41,7 +41,7 @@ spec:
         {{- end }}
         {{- if (and .Values.config.tls.enabled .Values.config.tls.autoEncrypt.enabled) }}
         - name: get-auto-encrypt-client-ca
-          image: {{ .Values.config.tls.autoEncrypt.consulK8SImage }}
+          image: {{ .Values.config.tls.autoEncrypt.consulK8sImage }}
           command:
             - "/bin/sh"
             - "-ec"
@@ -85,7 +85,7 @@ spec:
                 fieldRef:
                   fieldPath: "status.hostIP"
             - name: CONSUL_HTTP_ADDR
-              value: "$(HOST_IP):{{ .Values.config.useNodeAgent.port }}"
+              value: "{{ if .Values.config.tls.enabled }}https://{{ end }}$(HOST_IP):{{ .Values.config.useNodeAgent.port }}"
             {{- end }}
             {{- if  .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}

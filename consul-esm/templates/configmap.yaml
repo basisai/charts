@@ -78,8 +78,7 @@ data:
 
   {{- if (and .Values.config.tls.enabled .Values.config.tls.autoEncrypt.enabled) }}
   consul_template.hcl: |
-    pid_file = "/pid/consul-template"
-    log_level = "info"
+    log_level = "debug"
     kill_signal = "SIGTERM"
 
     consul {
