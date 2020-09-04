@@ -51,27 +51,51 @@ data:
     # The Consul datacenter to use.
     datacenter = ""
 
+    {{- if .Values.config.tls.enabled }}
     # The CA file to use for talking to Consul over TLS. Can also be provided
     # though the CONSUL_CACERT environment variable.
-    ca_file = ""
+    {{- if .Values.config.tls.autoEncrypt.enabled }}
+    ca_file = "/output/connect.pem"
+    {{- else if .Values.config.tls.cacert }}
+    ca_file = "/config/server.pem"
+    {{- end }}
 
-    # The path to a directory of CA certs to use for talking to Consul over TLS.
-    # Can also be provided through the CONSUL_CAPATH environment variable.
-    ca_path = ""
-
-    # The client cert file to use for talking to Consul over TLS. Can also be
-    # provided through the CONSUL_CLIENT_CERT environment variable.
-    cert_file = ""
-
-    # The client key file to use for talking to Consul over TLS. Can also be
-    # provided through the CONSUL_CLIENT_KEY environment variable.
-    key_file = ""
-
+    {{- if (and (not .Values.config.tls.autoEncrypt.enabled) .Values.config.tls.serverName ) }}
     # The server name to use as the SNI host when connecting to Consul via TLS.
     # Can also be provided through the CONSUL_TLS_SERVER_NAME environment
     # variable.
-    tls_server_name = ""
+    tls_server_name = "{{ .Values.config.tls.serverName }}"
+    {{- end }}
+    {{- end }}
 
     # The method to use for pinging external nodes. Defaults to "udp" but can
     # also be set to "socket" to use ICMP (which requires root privileges).
     ping_type = "{{ .Values.config.pingType }}"
+
+  {{- if .Values.config.tls.cacert }}
+  server.pem: {{ .Values.config.tls.cacert | quote}}
+  {{- end }}
+
+  {{- if (and .Values.config.tls.enabled .Values.config.tls.autoEncrypt.enabled) }}
+  consul_template.hcl: |
+    log_level = "debug"
+    kill_signal = "SIGTERM"
+
+    consul {
+      {{- if .Values.config.httpAddr }}
+      address = "{{ .Values.config.httpAddr }}"
+      {{- end }}
+
+      ssl {
+        enabled = true
+        ca_cert = "/output/connect.pem"
+      }
+    }
+    # Re-render CA Root
+    template {
+      destination = "/output/connect.pem"
+      left_delimiter = "<<"
+      right_delimiter = ">>"
+      contents = "<< range caRoots >><< .RootCertPEM >><< end >>"
+    }
+  {{- end }}
