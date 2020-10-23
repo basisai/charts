@@ -36,13 +36,13 @@ data:
     # The interval to ping and update coordinates for external nodes that have
     # 'external-probe' set to true. By default, ESM will attempt to ping and
     # update the coordinates for all nodes it is watching every 10 seconds.
-    node_probe_interval = "{{ .Values.config.node_probe_interval }}"
+    node_probe_interval = "{{ .Values.config.nodeProbeInterval }}"
 
     {{- if .Values.config.httpAddr }}
     # The address of the local Consul agent. Can also be provided through the
     # CONSUL_HTTP_ADDR environment variable.
     http_addr = "{{ .Values.config.httpAddr }}"
-    {{- end -}}
+    {{- end }}
 
     # The ACL token to use when communicating with the local Consul agent. Can
     # also be provided through the CONSUL_HTTP_TOKEN environment variable.
