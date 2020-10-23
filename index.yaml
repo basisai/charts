@@ -1,0 +1,81 @@
+apiVersion: v1
+entries:
+  cert-manager-aio:
+  - apiVersion: v1
+    appVersion: v0.14.2
+    created: "2020-10-23T02:15:19.333074915Z"
+    dependencies:
+    - name: cert-manager
+      repository: https://charts.jetstack.io
+      version: v0.14.2
+    description: cert-manager-aio with ACME solvers for GCP CloudDNS and Amazon Route53
+    digest: ab0cf53045bfd8c306eb5f44d98693d183d3021b6d7769557e69e15b6cae97b0
+    home: https://github.com/jetstack/cert-manager
+    name: cert-manager-aio
+    urls:
+    - https://github.com/basisai/charts/releases/download/cert-manager-aio-1.1.0/cert-manager-aio-1.1.0.tgz
+    version: 1.1.0
+  cloudsql-proxy:
+  - apiVersion: v1
+    appVersion: "1.16"
+    created: "2020-10-23T02:15:19.448922599Z"
+    description: Deploy CloudSQL Proxy on Kubernetes
+    digest: 88be92a67d28d4ed93d91a50dc90198c8f1acaf7664a001594291b41b5158bde
+    home: https://github.com/GoogleCloudPlatform/cloudsql-proxy
+    name: cloudsql-proxy
+    urls:
+    - https://github.com/basisai/charts/releases/download/cloudsql-proxy-0.2.2/cloudsql-proxy-0.2.2.tgz
+    version: 0.2.2
+  consul-esm:
+  - apiVersion: v1
+    appVersion: 0.3.3
+    created: "2020-10-23T02:15:19.56698998Z"
+    description: Consul ESM for external service health checks in Consul
+    digest: a8cbe0ba45729e3a18413c50c13a4f9746c2a3cb3dc82008984f3ee99caef451
+    home: https://github.com/hashicorp/consul-esm
+    name: consul-esm
+    urls:
+    - https://github.com/basisai/charts/releases/download/consul-esm-0.2.0/consul-esm-0.2.0.tgz
+    version: 0.2.0
+  default-psp:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-10-23T02:15:19.684880962Z"
+    description: Create a default PSP for everyone to use
+    digest: e685b4825fd002ec443974a5ae9a6bd22925d896e5066f213e78ef0b0068912c
+    home: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+    keywords:
+    - psp
+    name: default-psp
+    urls:
+    - https://github.com/basisai/charts/releases/download/default-psp-0.1.1/default-psp-0.1.1.tgz
+    version: 0.1.1
+  eks-container-insights:
+  - apiVersion: v1
+    appVersion: "1.0"
+    created: "2020-10-23T02:15:19.782377164Z"
+    description: A Helm chart for EKS Container Insights
+    digest: ec5b2686be3aa3346eea81e43ce7df3f27cf53fab520e287c9e8227956d96de8
+    home: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs.html
+    name: eks-container-insights
+    urls:
+    - https://github.com/basisai/charts/releases/download/eks-container-insights-0.3.3/eks-container-insights-0.3.3.tgz
+    version: 0.3.3
+  telegraf:
+  - apiVersion: v1
+    appVersion: "1.9"
+    created: "2020-10-23T02:15:19.907769038Z"
+    description: Telegraf is an agent written in Go for collecting, processing, aggregating,
+      and writing metrics.
+    digest: f4245bbdbbf170537e0ee7a331cde7210e709d4a848323e62921ac1066586bc8
+    home: https://www.influxdata.com/time-series-platform/telegraf/
+    keywords:
+    - telegraf
+    - collector
+    - timeseries
+    - influxdata
+    name: telegraf
+    urls:
+    - https://github.com/basisai/charts/releases/download/telegraf-1.2.2/telegraf-1.2.2.tgz
+    version: 1.2.2
+generated: "2020-10-23T02:15:19.205541243Z"
