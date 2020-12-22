@@ -2,5 +2,4 @@
 
 This Docker image is used in the consul-backup-gcs Helm Chart.
 
-It is built and published to
-[`basisai/consul-backup-gcs`](https://hub.docker.com/r/basisai/consul-backup-gcs).
+It is built and published to [`quay.io/basisai/consul-backup-gcs`](https://quay.io/basisai/consul-backup-gcs).
