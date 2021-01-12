@@ -1,0 +1,9 @@
+apiVersion: getambassador.io/v2
+kind: TLSContext
+metadata:
+  name: {{ include "ambassador-consul-connector.fullname" . }}
+  labels:
+    {{- include "ambassador-consul-connector.labels" . | nindent 4 }}
+spec:
+  hosts: []
+  secret: {{ include "ambassador-consul-connector.fullname" . }}
