@@ -5,5 +5,8 @@ metadata:
   labels:
     {{- include "ambassador-consul-connector.labels" . | nindent 4 }}
 spec:
+  {{- if .Values.ambassadorId }}
+  ambassador_id: {{ .Values.ambassadorId }}
+  {{- end }}
   hosts: []
   secret: {{ include "ambassador-consul-connector.fullname" . }}
