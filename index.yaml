@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  ambassador-consul-connector:
+  - apiVersion: v2
+    appVersion: 1.9.1
+    created: "2021-01-13T06:57:26.939520187Z"
+    description: Deploys Consul Connector for Ambassador
+    digest: a574b017930acee35cb2c9f085017088c70e5afbe8f84727e5e2716a585ee757
+    name: ambassador-consul-connector
+    type: application
+    urls:
+    - https://github.com/basisai/charts/releases/download/ambassador-consul-connector-0.1.0/ambassador-consul-connector-0.1.0.tgz
+    version: 0.1.0
   cert-manager-aio:
   - apiVersion: v1
     appVersion: v0.14.2
