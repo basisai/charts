@@ -42,6 +42,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.hostIP
+            - name: _AMBASSADOR_TLS_SECRET_NAME
+              value: {{ include "ambassador-consul-connector.fullname" . }}
             - name: _AMBASSADOR_TLS_SECRET_NAMESPACE
               valueFrom:
                 fieldRef:
