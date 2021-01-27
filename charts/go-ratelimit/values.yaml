@@ -53,7 +53,7 @@ priorityClassName: ""
 
 podDisruptionBudget: {}
 
-redisUrl: "redis"
+redisUrl: "redish-backend"
 redisSocketType: "tcp"
 redisPort: 6379
 
@@ -65,8 +65,10 @@ httpPort: 8080
 logLevel: debug
 
 config: |-
-  # Start with empty config
-
+  domain: initconfigmap
+  descriptors:
+    - key: generic_key
+      value: global
 
 redish:
   enabled: true
@@ -75,6 +77,6 @@ redish:
   persistence:
     enabled: false
   updateStrategy:
-    type: OnDelete
+    type: RollingUpdate
   twemproxy:
     enabled: false
