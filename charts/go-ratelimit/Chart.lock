@@ -1,0 +1,6 @@
+dependencies:
+- name: redis-sharded
+  repository: https://charts.softonic.io
+  version: 0.1.0
+digest: sha256:a425448d162504c62f66a792b3718c4fa7736669fa3b54a4faa6762a9bf3896b
+generated: "2021-01-27T16:19:15.5020272+08:00"
