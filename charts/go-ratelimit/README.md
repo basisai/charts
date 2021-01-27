@@ -1,6 +1,6 @@
 # Helm chart for Global rate limit envoy service
 
-Forked from [``](https://github.com/softonic/go-ratelimit-chart).
+Forked from [`softonic/go-ratelimit-chart`](https://github.com/softonic/go-ratelimit-chart).
 
 # Overview
 
