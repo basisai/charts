@@ -92,6 +92,22 @@ entries:
     urls:
     - https://github.com/basisai/charts/releases/download/eks-container-insights-0.3.3/eks-container-insights-0.3.3.tgz
     version: 0.3.3
+  go-ratelimit:
+  - apiVersion: v2
+    appVersion: 1.5.0
+    created: "2021-01-27T08:24:54.673317839Z"
+    dependencies:
+    - alias: redish
+      name: redis-sharded
+      repository: https://charts.softonic.io
+      version: 0.1.0
+    description: A Ratelimit Service Helm chart for Kubernetes
+    digest: a2012141444b4790bbf3edc37b920579ca24a0615b12eae29d472aa3325d1abc
+    name: go-ratelimit
+    type: application
+    urls:
+    - https://github.com/basisai/charts/releases/download/go-ratelimit-1.0.2/go-ratelimit-1.0.2.tgz
+    version: 1.0.2
   telegraf:
   - apiVersion: v1
     appVersion: "1.9"
