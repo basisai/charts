@@ -95,6 +95,21 @@ entries:
   go-ratelimit:
   - apiVersion: v2
     appVersion: v1.4.0
+    created: "2021-01-29T04:52:33.159784462Z"
+    dependencies:
+    - alias: redish
+      name: redis-sharded
+      repository: https://charts.softonic.io
+      version: 0.1.0
+    description: A Ratelimit Service Helm chart for Kubernetes
+    digest: 3cafeca596ddc1772902d1bc5a11b46d969cc9beff59bc6373c844aa02d83432
+    name: go-ratelimit
+    type: application
+    urls:
+    - https://github.com/basisai/charts/releases/download/go-ratelimit-1.1.0/go-ratelimit-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: v1.4.0
     created: "2021-01-28T01:30:36.877922049Z"
     dependencies:
     - alias: redish
