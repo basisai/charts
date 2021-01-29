@@ -41,6 +41,8 @@ hpa:
   minReplicas: 1
   maxReplicas: 5
 
+env: []
+
 resources: {}
 
 nodeSelector: {}
@@ -64,11 +66,12 @@ httpPort: 8080
 
 logLevel: debug
 
-config: |-
-  domain: initconfigmap
-  descriptors:
-    - key: generic_key
-      value: global
+config:
+  example.yaml: |-
+    domain: example
+    descriptors:
+      - key: generic_key
+        value: global
 
 redish:
   enabled: true

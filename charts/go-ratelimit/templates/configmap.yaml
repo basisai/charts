@@ -5,5 +5,4 @@ metadata:
   labels:
     {{- include "go-ratelimit.labels" . | nindent 4 }}
 data:
-  config.yaml: |-
-    {{ .Values.config | nindent 4 }}
+  {{- toYaml .Values.config | nindent 2}}

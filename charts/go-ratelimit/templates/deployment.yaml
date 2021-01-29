@@ -11,13 +11,11 @@ spec:
       {{- include "go-ratelimit.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      annotations:
-        checksum/config: {{ include (print .Template.BasePath "/configmap.yaml") . | sha256sum }}
       labels:
         {{- include "go-ratelimit.selectorLabels" . | nindent 8 }}
-{{- if .Values.podLabels }}
-{{ toYaml .Values.podLabels | indent 8 }}
-{{- end }}
+        {{- if .Values.podLabels }}
+        {{- toYaml .Values.podLabels | nindent 8 }}
+        {{- end }}
     spec:
       priorityClassName: "{{ .Values.priorityClassName }}"
     {{- with .Values.imagePullSecrets }}
@@ -45,6 +43,13 @@ spec:
             value: "false"
           - name: RUNTIME_IGNOREDOTFILES
             value: "true"
+          # Watch for changes in ConfigMap instead of changes to symlink
+          # See https://github.com/envoyproxy/ratelimit#loading-configuration
+          - name: RUNTIME_WATCH_ROOT
+            value: "false"
+          {{- with .Values.env }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: "{{ .Values.image.pullPolicy }}"
