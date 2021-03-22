@@ -11,6 +11,9 @@ serviceAccountName: fluentd
 image: basisai/eks-container-insights
 imageTag: v1.7.3
 
+initImage: busybox
+initImageTag: 1.32.0
+
 awsRegion: ""
 clusterName: ""
 
