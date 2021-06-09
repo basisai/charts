@@ -21,6 +21,11 @@ clusterName: ""
 
 logToS3Bucket: false
 s3Bucket: ""
+# See https://github.com/fluent/fluent-plugin-s3/blob/master/docs/credentials.md
+# Defaults to using Instance IAM
+s3Credentials: |
+  <instance_profile_credentials>
+  </instance_profile_credentials>
 
 additional_container_logs_filters: []
 additional_systemd_logs_filters: []
