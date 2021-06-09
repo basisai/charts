@@ -21,6 +21,19 @@ clusterName: ""
 
 logToS3Bucket: false
 s3Bucket: ""
+# See https://github.com/fluent/fluent-plugin-s3/blob/master/docs/credentials.md
+# Defaults to using Instance IAM
+s3Credentials: |
+  <instance_profile_credentials>
+  </instance_profile_credentials>
+
+# IRSA Example
+# s3Credentials: |
+#   <web_identity_credentials>
+#     role_arn "#{ENV.fetch('AWS_ROLE_ARN')}"
+#     web_identity_token_file "#{ENV.fetch('AWS_WEB_IDENTITY_TOKEN_FILE')}"
+#     role_session_name "#{ENV.fetch('KUBERNETES_NODE_NAME')}-fluentd"
+#   </web_identity_credentials>
 
 additional_container_logs_filters: []
 additional_systemd_logs_filters: []
