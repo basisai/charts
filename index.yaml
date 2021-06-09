@@ -84,6 +84,16 @@ entries:
   eks-container-insights:
   - apiVersion: v1
     appVersion: "1.0"
+    created: "2021-06-09T08:41:02.423678418Z"
+    description: A Helm chart for EKS Container Insights
+    digest: e2fea77bd786c1329a999d3bb89afb69fe29691c29b437e2fa26c3bed61089da
+    home: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs.html
+    name: eks-container-insights
+    urls:
+    - https://github.com/basisai/charts/releases/download/eks-container-insights-0.4.1/eks-container-insights-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v1
+    appVersion: "1.0"
     created: "2021-06-09T07:09:55.045777588Z"
     description: A Helm chart for EKS Container Insights
     digest: 3e30cf87e396847cd03474f1c8e7302daafae04ae94b0367e4f7bdd8af56907e
