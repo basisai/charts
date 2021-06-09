@@ -4,8 +4,7 @@ kind: DaemonSet
 metadata:
   name: {{ include "eks-container-insights.fullname" . }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    k8s-app: {{ include "eks-container-insights.name" . }}
+  labels: {{- include "eks-container-insights.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
@@ -14,25 +13,26 @@ spec:
     metadata:
       labels:
         k8s-app: {{ include "eks-container-insights.name" . }}
+        {{- include "eks-container-insights.labels" . | nindent 8 }}
       annotations:
         configHash: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: "{{ .Values.priorityClassName }}"
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       terminationGracePeriodSeconds: 30
     {{- if .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
     {{- end }}
       {{ if .Values.affinity }}
       affinity:
-{{ toYaml .Values.affinity | indent 8 }}
+        {{- toYaml .Values.affinity | nindent 8 }}
       {{- end }}
     {{- if .Values.tolerations }}
       tolerations:
-{{ toYaml .Values.tolerations | indent 8 }}
+      {{- toYaml .Values.tolerations | nindent 8 }}
     {{- end }}
       # Because the image's entrypoint requires to write on /fluentd/etc but we mount configmap there which is read-only,
       # this initContainers workaround or other is needed.
@@ -67,10 +67,12 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: spec.nodeName
+            - name: AWS_STS_REGIONAL_ENDPOINTS
+              value: regional
             # END Archive cluster logs to S3
             {{- end }}
           resources:
-{{ toYaml .Values.resources | indent 12 }}
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: config-volume
               mountPath: /config-volume

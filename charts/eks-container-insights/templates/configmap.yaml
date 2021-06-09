@@ -4,8 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "eks-container-insights.fullname" . }}
   namespace: {{ .Release.Namespace }}
-  labels:
-    k8s-app: {{ include "eks-container-insights.name" . }}
+  labels: {{- include "eks-container-insights.labels" . | nindent 4 }}
 data:
   fluent.conf: |
     @include containers.conf

@@ -6,10 +6,12 @@ nameOverride: ""
 fullnameOverride: ""
 
 priorityClassName: "system-node-critical"
-serviceAccountName: fluentd
+serviceAccount:
+  name: fluentd
+  annotations: {}
 
 image: basisai/eks-container-insights
-imageTag: v1.7.3
+imageTag: v1.12.4
 
 initImage: busybox
 initImageTag: 1.32.0
