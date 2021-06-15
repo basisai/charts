@@ -3,11 +3,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: {{ template "fluentd.fullname" . }}
-  labels:
-    app: {{ template "fluentd.name" . }}
-    chart: {{ template "fluentd.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "fluentd.labels" . | nindent 4 }}
 subjects:
 - kind: ServiceAccount
   name: {{ template "fluentd.fullname" . }}

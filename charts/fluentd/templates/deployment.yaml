@@ -7,11 +7,7 @@ kind: Deployment
 {{- end}}
 metadata:
   name: {{ template "fluentd.fullname" . }}
-  labels:
-    app: {{ template "fluentd.name" . }}
-    chart: {{ template "fluentd.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  labels: {{- include "fluentd.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
