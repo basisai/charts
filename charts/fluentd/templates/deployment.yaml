@@ -17,8 +17,7 @@ spec:
 {{- end }}
   selector:
     matchLabels:
-      app: {{ template "fluentd.name" . }}
-      release: {{ .Release.Name }}
+      {{- include "fluentd.selectorLabels" . | nindent 6 }}
   {{- if and .Values.persistence.enabled (not .Values.autoscaling.enabled) }}
   strategy:
     type: Recreate
@@ -26,8 +25,7 @@ spec:
   template:
     metadata:
       labels:
-        app: {{ template "fluentd.name" . }}
-        release: {{ .Release.Name }}
+        {{- include "fluentd.selectorLabels" . | nindent 8 }}
 {{- with .Values.deployment.labels }}
 {{ toYaml . | indent 8 }}
 {{- end }}
