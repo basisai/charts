@@ -122,6 +122,21 @@ entries:
     urls:
     - https://github.com/basisai/charts/releases/download/eks-container-insights-0.3.3/eks-container-insights-0.3.3.tgz
     version: 0.3.3
+  fluentd:
+  - apiVersion: v1
+    appVersion: v3.2.0
+    created: "2021-06-16T08:35:40.107443896Z"
+    description: A Fluentd Helm chart for Kubernetes.
+    digest: 6e2ccfe911df8dd29e7de89108baa7e9836d9a9e6e1a38fa235fb395b104d9ef
+    home: https://www.fluentd.org/
+    icon: https://raw.githubusercontent.com/fluent/fluentd-docs/master/public/logo/Fluentd_square.png
+    name: fluentd
+    sources:
+    - https://github.com/helm/charts/tree/269d7791a5ddb8622e66e02e3fff756a4cdbf4f9/stable/fluentd
+    - https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch/fluentd-es-image
+    urls:
+    - https://github.com/basisai/charts/releases/download/fluentd-2.6.0/fluentd-2.6.0.tgz
+    version: 2.6.0
   go-ratelimit:
   - apiVersion: v2
     appVersion: v1.4.0
