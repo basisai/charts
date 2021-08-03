@@ -71,6 +71,9 @@ spec:
               value: regional
             # END Archive cluster logs to S3
             {{- end }}
+            {{- with .Values.env }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

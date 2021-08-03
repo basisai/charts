@@ -11,7 +11,7 @@ serviceAccount:
   annotations: {}
 
 image: basisai/eks-container-insights
-imageTag: v1.12.4
+imageTag: v1.13.0
 
 initImage: busybox
 initImageTag: 1.32.0
@@ -38,6 +38,13 @@ s3Credentials: |
 additional_container_logs_filters: []
 additional_systemd_logs_filters: []
 additional_host_logs_filters: []
+
+env: []
+  # Use these variables if containerd runtime
+  # - name: FLUENT_CONTAINER_TAIL_PARSER_TYPE
+  #   value: "cri"
+  # - name: FLUENT_CONTAINER_TAIL_PARSER_TIME_FORMAT
+  #   value: "%Y-%m-%dT%H:%M:%S.%N%:z"
 
 resources:
   limits:
