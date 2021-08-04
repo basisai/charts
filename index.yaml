@@ -82,6 +82,16 @@ entries:
     - https://github.com/basisai/charts/releases/download/default-psp-0.1.1/default-psp-0.1.1.tgz
     version: 0.1.1
   eks-container-insights:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2021-08-04T03:50:03.729071633Z"
+    description: A Helm chart for EKS Container Insights
+    digest: f7ff398ad98fb391a1c026a4e7d4a318310aaabf22a17da466b2ed41835fa356
+    home: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs.html
+    name: eks-container-insights
+    urls:
+    - https://github.com/basisai/charts/releases/download/eks-container-insights-0.5.0/eks-container-insights-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v1
     appVersion: "1.0"
     created: "2021-06-09T08:41:02.423678418Z"
