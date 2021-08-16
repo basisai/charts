@@ -100,8 +100,8 @@ config:
     # If autoEncrypt is on, this should be set to true
     autoEncrypt:
       enabled: false
-      consulK8sImage: hashicorp/consul-k8s:0.18.1
-      consulTemplateImage: hashicorp/consul-template:0.25.1-light
+      consulK8sImage: hashicorp/consul-k8s-control-plane:0.33.0
+      consulTemplateImage: hashicorp/consul-template:0.26.0
       server:
         address: consul-server.core.svc
         port: 8501
