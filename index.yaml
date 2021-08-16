@@ -50,6 +50,16 @@ entries:
   consul-esm:
   - apiVersion: v1
     appVersion: 0.4.0
+    created: "2021-08-16T07:28:41.399734245Z"
+    description: Consul ESM for external service health checks in Consul
+    digest: 1855eb02feadd2c3bbf649e2b5e286c9c206117aadc8707443b59c41ee0d06b4
+    home: https://github.com/hashicorp/consul-esm
+    name: consul-esm
+    urls:
+    - https://github.com/basisai/charts/releases/download/consul-esm-0.3.0/consul-esm-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v1
+    appVersion: 0.4.0
     created: "2020-10-23T02:37:07.487262607Z"
     description: Consul ESM for external service health checks in Consul
     digest: 4d9a928c67e2af938de3c4bedce060a80ff98e42bae2b01d6a538594fef0cd37
