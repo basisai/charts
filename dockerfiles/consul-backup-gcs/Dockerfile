@@ -1,7 +1,7 @@
-FROM google/cloud-sdk:251.0.0
+FROM google/cloud-sdk:355.0.0
 
-ARG ansible_version=2.8.1
-ARG consul_version=1.5.1
+ARG ansible_version=2.9.25
+ARG consul_version=1.10.2
 
 RUN set -xe \
     && apt-get update \
