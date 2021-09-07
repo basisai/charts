@@ -1,4 +1,4 @@
-name: Build consul-backup-gcs Docker images
+name: Build Docker images
 on:
   pull_request: {}
   push:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v3
+        uses: crazy-max/ghaction-docker-meta@v1
         with:
           images: quay.io/basisai/${{ matrix.repo }}
       - name: Set up QEMU
