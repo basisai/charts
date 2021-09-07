@@ -1,16 +1,11 @@
 name: Build consul-backup-gcs Docker images
 on:
-  pull_request:
-    types: [opened, ready_for_review, reopened, synchronize]
+  pull_request: {}
   push:
     branches:
       - master
     tags:
       - v*
-    paths:
-      - 'dockerfiles/**/**'
-    paths-ignore:
-      - 'dockerfiles/**/**.md'
 
 jobs:
   build:
