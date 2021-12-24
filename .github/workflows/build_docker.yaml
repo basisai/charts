@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - custom_runner_image
     tags:
       - v*
     paths:
