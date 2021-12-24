@@ -1,5 +1,7 @@
 name: Build Docker images
 on:
+  pull_request:
+    types: [opened, ready_for_review, reopened, synchronize]
   push:
     branches:
       - master
