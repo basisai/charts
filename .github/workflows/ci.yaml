@@ -8,7 +8,7 @@ on:
 jobs:
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, docker, integration]
     env:
       TEST_IMAGE: "quay.io/helmpack/chart-testing:v3.0.0"
       BATS_IMAGE: "basisai/bats-helm:v1.2.1"
