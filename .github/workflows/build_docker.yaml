@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - custom_runner_image
     tags:
       - v*
     paths:
@@ -10,10 +11,15 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, docker, integration]
     strategy:
       matrix:
-        repo: ["consul-backup-gcs", "eks-container-insights", "fluentd"]
+        repo:
+          - consul-backup-gcs
+          - eks-container-insights
+          - fluentd
+          - actions-runner
+          - actions-runner-dind
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
