@@ -1,7 +1,7 @@
 name: default-psp
-apiVersion: v1
+apiVersion: v2
 appVersion: "1.0"
-version: 0.1.1
+version: 0.1.2
 description: Create a default PSP for everyone to use
 keywords:
   - psp

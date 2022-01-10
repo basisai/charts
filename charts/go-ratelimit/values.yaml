@@ -9,10 +9,10 @@ image:
   # Defaults to chart AppVersion if unspecified
   tag:
   pullPolicy: IfNotPresent
+  # imagePullSecrets: []
 
-# imagePullSecrets: []
 # nameOverride: ""
-# fullnameOverride: ""
+# fullnameOverride: ""
 
 podLabels: {}
 podAnnotations: {}
