@@ -89,6 +89,18 @@ entries:
     - https://github.com/basisai/charts/releases/download/consul-esm-0.2.0/consul-esm-0.2.0.tgz
     version: 0.2.0
   default-psp:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2022-01-11T07:08:26.72157114Z"
+    description: Create a default PSP for everyone to use
+    digest: f61b23a761dda7f30e311b7c56705a414f9f019d714f2b41a33e36a97447775e
+    home: https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+    keywords:
+    - psp
+    name: default-psp
+    urls:
+    - https://github.com/basisai/charts/releases/download/default-psp-0.1.2/default-psp-0.1.2.tgz
+    version: 0.1.2
   - apiVersion: v1
     appVersion: "1.0"
     created: "2020-10-23T02:15:19.684880962Z"
@@ -168,6 +180,21 @@ entries:
     - https://github.com/basisai/charts/releases/download/fluentd-2.6.0/fluentd-2.6.0.tgz
     version: 2.6.0
   go-ratelimit:
+  - apiVersion: v2
+    appVersion: v1.4.0
+    created: "2022-01-11T07:08:27.076500889Z"
+    dependencies:
+    - alias: redish
+      name: redis-sharded
+      repository: https://charts.softonic.io
+      version: 0.1.0
+    description: A Ratelimit Service Helm chart for Kubernetes
+    digest: 79f9bb66f6715733d617467bdc3ac94f3cbc57cebeb72a27422817d316e96e40
+    name: go-ratelimit
+    type: application
+    urls:
+    - https://github.com/basisai/charts/releases/download/go-ratelimit-1.1.1/go-ratelimit-1.1.1.tgz
+    version: 1.1.1
   - apiVersion: v2
     appVersion: v1.4.0
     created: "2021-01-29T04:52:33.159784462Z"
