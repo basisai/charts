@@ -38,6 +38,6 @@ clusterrole:
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
 clusterrolebinding:
   subjects:
-  - kind: Group
-    name: system:serviceaccounts
-    apiGroup: rbac.authorization.k8s.io
+    - kind: Group
+      name: system:serviceaccounts
+      apiGroup: rbac.authorization.k8s.io
