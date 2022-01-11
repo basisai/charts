@@ -24,10 +24,10 @@ RUN . /etc/os-release \
   | apt-key add - \
   && apt-get update \
   && apt-get -y --no-install-recommends install skopeo=${SKOPEO_VERSION} \
-  && wget -O /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${ARCH} \
-  && curl https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz | tar -xz -C /tmp \
+  && wget https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_${ARCH} -O /usr/local/bin/yq  \
+  && wget https://get.helm.sh/helm-v${HELM_VERSION}-linux-${ARCH}.tar.gz -O - | tar -xz -C /tmp \
   && mv /tmp/linux-${ARCH}/helm /usr/local/bin \
-  && chmod +x /usr/local/bin/{yq,helm} \
+  && chmod +x /usr/local/bin/yq \
   && rm -rf /var/lib/apt/lists/* /tmp/linux-${ARCH}
 
 USER runner
