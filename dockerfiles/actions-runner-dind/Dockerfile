@@ -6,7 +6,7 @@ ARG helm_version=3.7.2
 
 ENV SKOPEO_VERSION=100:1.3.0-1
 ENV YQ_VERSION=v4.16.2
-ENV HELM_VERSION="${helm_version}"
+ENV HELM_VERSION="${helm_version:-3.7.2}"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir -p /tmp/aws \
