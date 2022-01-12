@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   ambassador-consul-connector:
   - apiVersion: v2
+    appVersion: 2.1.0
+    created: "2022-01-12T01:17:55.063343324Z"
+    description: Deploys Consul Connector for Ambassador
+    digest: 68222cae17a0003a9e5a614201129dbef863b4b4b279c8e5820e8466905c3656
+    name: ambassador-consul-connector
+    type: application
+    urls:
+    - https://github.com/basisai/charts/releases/download/ambassador-consul-connector-0.2.0/ambassador-consul-connector-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 1.9.1
     created: "2021-01-14T04:54:27.352510422Z"
     description: Deploys Consul Connector for Ambassador
@@ -257,4 +267,4 @@ entries:
     urls:
     - https://github.com/basisai/charts/releases/download/telegraf-1.2.2/telegraf-1.2.2.tgz
     version: 1.2.2
-generated: "2020-10-23T02:15:19.205541243Z"
+generated: "2022-01-12T01:17:55.063393604Z"
